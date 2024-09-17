@@ -7,12 +7,6 @@ import com.example.project_edgecraft_back_end.service.UserService;
 import com.example.project_edgecraft_back_end.util.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 @Service
 public class UserServiceIMPL implements UserService {
@@ -65,5 +59,11 @@ public class UserServiceIMPL implements UserService {
     public UserDTO getUser(String email) {
         User user = userRepository.findByEmail(email);
         return mapper.userToUserDto(user);
+    }
+
+    @Override
+    public boolean updateUser(String email, String password, String userName) {
+        int updated = userRepository.updateUser(email, password, userName);
+        return updated > 0;
     }
 }

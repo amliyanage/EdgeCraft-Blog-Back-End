@@ -9,6 +9,7 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,6 +24,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/edge_craft/v1/user")
 @CrossOrigin("*")
+@Transactional
 public class UserController {
 
     @Autowired
@@ -111,6 +113,17 @@ public class UserController {
             }
         } catch (MalformedURLException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @PutMapping(params = {"email","password","userName"})
+    public ResponseEntity<String> updateUser(@RequestParam("email") String email , @RequestParam("password") String password , @RequestParam("userName") String userName){
+        boolean updated = userService.updateUser(email, password, userName);
+        if (updated){
+            return ResponseEntity.ok().body("User updated successfully");
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
     }
 
