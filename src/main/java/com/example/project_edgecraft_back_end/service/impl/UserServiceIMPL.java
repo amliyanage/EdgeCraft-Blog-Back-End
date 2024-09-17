@@ -1,6 +1,7 @@
 package com.example.project_edgecraft_back_end.service.impl;
 
 import com.example.project_edgecraft_back_end.dto.UserDTO;
+import com.example.project_edgecraft_back_end.entity.User;
 import com.example.project_edgecraft_back_end.repository.UserRepository;
 import com.example.project_edgecraft_back_end.service.UserService;
 import com.example.project_edgecraft_back_end.util.Mapper;
@@ -58,5 +59,11 @@ public class UserServiceIMPL implements UserService {
         else {
             return "User does not exist";
         }
+    }
+
+    @Override
+    public UserDTO getUser(String email) {
+        User user = userRepository.findByEmail(email);
+        return mapper.userToUserDto(user);
     }
 }

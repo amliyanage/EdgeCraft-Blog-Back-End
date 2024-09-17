@@ -4,13 +4,17 @@ import com.example.project_edgecraft_back_end.dto.UserDTO;
 import com.example.project_edgecraft_back_end.service.UserService;
 import com.example.project_edgecraft_back_end.util.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -78,6 +82,35 @@ public class UserController {
         }
         else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+    }
+
+    @GetMapping(value = "/{email}")
+    public ResponseEntity<UserDTO> getUser(@PathVariable("email") String email){
+        UserDTO userDTO = userService.getUser(email);
+        if (userDTO != null){
+            return ResponseEntity.ok().body(userDTO);
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @GetMapping(value = "/profilePic/{userName}")
+    public ResponseEntity<Resource> getProfilePic(@PathVariable("userName") String userName) {
+        try {
+            Path path = Paths.get(UPLOADED_FOLDER + userName + ".jpg");
+            Resource resource = new UrlResource(path.toUri());
+
+            if (resource.exists() && resource.isReadable()) {
+                return ResponseEntity.ok()
+                        .contentType(MediaType.IMAGE_JPEG)
+                        .body(resource);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+        } catch (MalformedURLException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 

@@ -7,4 +7,6 @@ public interface UserService {
     String saveUser(UserDTO userDTO);
 
     String loginUser(String email, String password);
+
+    UserDTO getUser(String email);
 }
