@@ -5,4 +5,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface UserService {
     String saveUser(UserDTO userDTO);
+
+    String loginUser(String email, String password);
 }
