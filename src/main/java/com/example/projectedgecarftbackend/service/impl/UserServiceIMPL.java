@@ -1,0 +1,47 @@
+package com.example.projectedgecarftbackend.service.impl;
+
+import com.example.projectedgecarftbackend.dto.UserDTO;
+import com.example.projectedgecarftbackend.entity.User;
+import com.example.projectedgecarftbackend.repository.UserRepository;
+import com.example.projectedgecarftbackend.service.UserService;
+import com.example.projectedgecarftbackend.util.AppInit;
+import com.example.projectedgecarftbackend.util.Mapping;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@Transactional
+public class UserServiceIMPL implements UserService {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    Mapping mapping;
+
+    @Override
+    public String register(UserDTO userDTO){
+
+        while (userRepository.existsByUserId(userDTO.getUserId())){
+            userDTO.setUserId(AppInit.generateUserId());
+        }
+
+        if (!userRepository.existsByEmail(userDTO.getEmail())){
+            if (!userRepository.existsByUserName(userDTO.getUserName())){
+                User save = userRepository.save(mapping.userDtoToUser(userDTO));
+                if (save != null){
+                    return "User Registration Successful";
+                }else {
+                    return "Registration Fail";
+                }
+            }else {
+                return "Username is Already Taken";
+            }
+        }else {
+            return "Email is Already Taken";
+        }
+
+    }
+
+}
