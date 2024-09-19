@@ -1,16 +1,17 @@
 package com.example.project_edgecraft_back_end.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
+@Table(name = "user")
 public class User {
 
     @Id
@@ -27,4 +28,10 @@ public class User {
 
     @Column(nullable = false)
     private String role;
+
+    @Column(nullable = false)
+    private String status;
+
+    @OneToMany(mappedBy = "userId")
+    private List<Project> projects;
 }

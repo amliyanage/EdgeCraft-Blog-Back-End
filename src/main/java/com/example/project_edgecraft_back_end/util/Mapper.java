@@ -9,10 +9,10 @@ import java.util.UUID;
 @Service
 public class Mapper {
     public User userDtoToUser(UserDTO userDto) {
-        return new User(userDto.getUserId(), userDto.getUserName(), userDto.getEmail(), userDto.getPassword(), userDto.getRole());
+        return new User(userDto.getUserId(), userDto.getUserName(), userDto.getEmail(), userDto.getPassword(), userDto.getRole(),userDto.getStatus(),null);
     }
     public UserDTO userToUserDto(User user) {
-        return new UserDTO(user.getUserId(), user.getUserName(), user.getEmail(), user.getPassword(), user.getRole());
+        return new UserDTO(user.getUserId(), user.getUserName(), user.getEmail(), user.getPassword(), user.getRole(), user.getStatus());
     }
     public static String generateUserId (){
         return "U-" + UUID.randomUUID().toString();

@@ -32,6 +32,7 @@ public class UserController {
 
     private static final String UPLOADED_FOLDER = "uploads/";
 
+    //TODO : add status
     @PostMapping
     public ResponseEntity<String> register(@RequestParam("userName") String userName,
                                            @RequestParam("email") String email,
@@ -44,6 +45,7 @@ public class UserController {
         userDTO.setEmail(email);
         userDTO.setPassword(password);
         userDTO.setRole(role);
+        userDTO.setStatus("Active");
 
         try {
             String response = userService.saveUser(userDTO);
