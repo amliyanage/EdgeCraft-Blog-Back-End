@@ -69,4 +69,14 @@ public class UserController {
         Files.write(path,file.getBytes());
     }
 
+    @GetMapping(value = "/login", params = {"email" , "password"})
+    public ResponseEntity<String> login(@RequestParam("email")String email , @RequestParam("password")String password){
+        String response = userService.login(email,password);
+        if(response.equals("login successful")){
+            return new ResponseEntity<>(response,HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

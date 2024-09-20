@@ -44,4 +44,18 @@ public class UserServiceIMPL implements UserService {
 
     }
 
+    @Override
+    public String login(String email, String password) {
+        if (userRepository.existsByEmail(email)){
+            if (userRepository.getPassword(email).equals(password)){
+                return "login successful";
+            }
+            else {
+                return "wrong password";
+            }
+        }else {
+            return "can not find user";
+        }
+    }
+
 }
