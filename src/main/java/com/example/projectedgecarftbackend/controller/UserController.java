@@ -3,7 +3,10 @@ package com.example.projectedgecarftbackend.controller;
 import com.example.projectedgecarftbackend.dto.UserDTO;
 import com.example.projectedgecarftbackend.service.UserService;
 import com.example.projectedgecarftbackend.util.AppInit;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -96,6 +100,23 @@ public class UserController {
             return new ResponseEntity<>("Update User Successful",HttpStatus.CREATED);
         }else {
             return new ResponseEntity<>("Failed Update",HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(value = "/profilePic/{username}")
+    public ResponseEntity<Resource> getUserPic(@PathVariable("username")String username){
+        try {
+            Path path = Paths.get("src/main/resources/static/"+username+".jpg");
+            Resource resource = new UrlResource(path.toUri());
+
+            if (resource.exists() && resource.isReadable()){
+                return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(resource);
+            }else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+
+        } catch (MalformedURLException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 
