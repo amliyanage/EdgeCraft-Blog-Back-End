@@ -79,4 +79,24 @@ public class UserController {
         }
     }
 
+    @GetMapping(value = "/{email}")
+    public ResponseEntity<UserDTO> getUser(@PathVariable("email")String email){
+        UserDTO userDTO = userService.getUserData(email);
+        if (userDTO != null){
+            return new ResponseEntity<>(userDTO,HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping(params = {"email" , "password","username"})
+    public ResponseEntity<String> updateUser(@RequestParam("email")String email , @RequestParam("password")String password, @RequestParam("username")String username){
+        boolean response = userService.updateUser(email,password,username);
+        if (response){
+            return new ResponseEntity<>("Update User Successful",HttpStatus.CREATED);
+        }else {
+            return new ResponseEntity<>("Failed Update",HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

@@ -58,4 +58,20 @@ public class UserServiceIMPL implements UserService {
         }
     }
 
+    @Override
+    public UserDTO getUserData(String email) {
+        if (userRepository.existsByEmail(email)){
+            User user = userRepository.getUserByEmail(email);
+            return mapping.userToUserDto(user);
+        }else {
+            return null;
+        }
+    }
+
+    @Override
+    public boolean updateUser(String email, String password, String username) {
+        int updated = userRepository.updateUser(email, password, username);
+        return updated > 0;
+    }
+
 }
