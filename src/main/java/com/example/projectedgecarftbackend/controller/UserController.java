@@ -10,6 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 @RestController
 @RequestMapping("/edge_craft/v1/users")
 @CrossOrigin("*")
@@ -42,6 +47,7 @@ public class UserController {
 
             String response = userService.register(userDTO);
             if (response.equals("User Registration Successful")){
+                saveUploadedFile(profilePic,userName);
                 return new ResponseEntity<>(response,HttpStatus.CREATED);
             } else {
                 return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
@@ -49,6 +55,18 @@ public class UserController {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private void saveUploadedFile(MultipartFile file, String fileName) throws Exception {
+        File uploadFile = new File("src/main/resources/static/");
+
+        if (!uploadFile.exists()){
+            uploadFile.mkdir();
+        }
+
+        String newFileName = fileName + ".jpg";
+        Path path = Paths.get("src/main/resources/static/"+newFileName);
+        Files.write(path,file.getBytes());
     }
 
 }
