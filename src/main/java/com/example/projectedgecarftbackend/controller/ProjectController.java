@@ -157,4 +157,19 @@ public class ProjectController {
         }
     }
 
+    @DeleteMapping(value = "/{projectId}")
+    public ResponseEntity<String> deleteProject(@PathVariable("projectId") String projectId){
+        String response = null;
+        try {
+            response = projectService.deleteProject(projectId);
+            if (response.equals("Project Delete Successful")){
+                return ResponseEntity.ok(response);
+            }else {
+                return ResponseEntity.badRequest().body(response);
+            }
+        } catch (IOException e) {
+            return ResponseEntity.badRequest().body("Project Delete Failed");
+        }
+    }
+
 }
