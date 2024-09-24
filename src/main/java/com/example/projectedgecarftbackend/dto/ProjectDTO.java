@@ -10,9 +10,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProjectDTO {
     private String projectId;
+    private String projectTitle;
+    private String projectType;
+    private String projectStatus;
     private String description;
     private String summery;
     private String gitHubLink;
-    private String userType;
+    private String date;
     private User user;
 }
