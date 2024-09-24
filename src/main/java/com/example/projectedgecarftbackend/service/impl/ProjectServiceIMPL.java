@@ -1,6 +1,8 @@
 package com.example.projectedgecarftbackend.service.impl;
 import com.example.projectedgecarftbackend.dto.ProjectDTO;
+import com.example.projectedgecarftbackend.dto.UserDTO;
 import com.example.projectedgecarftbackend.entity.Project;
+import com.example.projectedgecarftbackend.entity.User;
 import com.example.projectedgecarftbackend.repository.ProjectRepository;
 import com.example.projectedgecarftbackend.service.ProjectService;
 import com.example.projectedgecarftbackend.util.AppInit;
@@ -13,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -64,6 +67,13 @@ public class ProjectServiceIMPL implements ProjectService {
         }else {
             return null;
         }
+    }
+
+    @Override
+    public List<ProjectDTO> getAllProjects(UserDTO userDTO) {
+        User user = mapping.userDtoToUser(userDTO);
+        List<Project> allProjectByUser = projectRepository.getAllProjectByUser(user);
+        return mapping.convertToProjectDTOList(allProjectByUser);
     }
 
     public void deleteOldThumbnails(String fileName) throws IOException {

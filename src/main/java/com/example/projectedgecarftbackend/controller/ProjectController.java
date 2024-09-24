@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 @RestController
 @RequestMapping("/edge_craft/v1/projects")
@@ -133,6 +134,17 @@ public class ProjectController {
             return ResponseEntity.badRequest().body(null);
         }
 
+    }
+
+    @GetMapping(value = "/allProjects/{email}")
+    public ResponseEntity<List<ProjectDTO>> getAllProjects(@PathVariable("email") String email){
+        UserDTO userData = userService.getUserData(email);
+        List<ProjectDTO> list = projectService.getAllProjects(userData);
+        if (list != null){
+            return ResponseEntity.ok().body(list);
+        }else {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
 }

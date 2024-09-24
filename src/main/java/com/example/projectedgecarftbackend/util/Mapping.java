@@ -8,6 +8,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class Mapping {
 
@@ -28,6 +30,10 @@ public class Mapping {
 
     public ProjectDTO projectToProjectDto (Project project){
         return modelMapper.map(project,ProjectDTO.class);
+    }
+
+    public List<ProjectDTO> convertToProjectDTOList(List<Project> projects){
+        return modelMapper.map(projects, List.class);
     }
 
 }
