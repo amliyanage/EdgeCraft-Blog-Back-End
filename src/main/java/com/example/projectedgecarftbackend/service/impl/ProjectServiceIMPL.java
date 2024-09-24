@@ -56,6 +56,16 @@ public class ProjectServiceIMPL implements ProjectService {
         }
     }
 
+    @Override
+    public ProjectDTO getProject(String projectId) {
+        Project project = projectRepository.findByProjectId(projectId);
+        if (project != null){
+            return mapping.projectToProjectDto(project);
+        }else {
+            return null;
+        }
+    }
+
     public void deleteOldThumbnails(String fileName) throws IOException {
         Path path = Paths.get("src/main/resources/static/projectThumbnail/" + fileName +".jpg");
         Files.delete(path);

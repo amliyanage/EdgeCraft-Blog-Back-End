@@ -7,6 +7,7 @@ import com.example.projectedgecarftbackend.service.UserService;
 import com.example.projectedgecarftbackend.util.AppInit;
 import com.example.projectedgecarftbackend.util.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -120,6 +121,18 @@ public class ProjectController {
         } catch (IOException e) {
             return ResponseEntity.internalServerError().body("Project Update Failed");
         }
+    }
+
+    @GetMapping(value = "/{projectId}")
+    public ResponseEntity<ProjectDTO> getProject(@PathVariable("projectId") String projectId){
+
+        ProjectDTO projectDTO = projectService.getProject(projectId);
+        if (projectDTO != null){
+            return new ResponseEntity<>(projectDTO, HttpStatus.OK);
+        }else {
+            return ResponseEntity.badRequest().body(null);
+        }
+
     }
 
 }

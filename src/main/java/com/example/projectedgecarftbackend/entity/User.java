@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Set;
 
 @AllArgsConstructor
 @Data
@@ -28,6 +29,6 @@ public class User {
     private String role;
     private String status;
 
-    @OneToMany(mappedBy = "user")
-    private List<Project> projects;
+    @OneToMany(mappedBy = "user" , fetch = FetchType.EAGER)
+    private Set<Project> projects;
 }

@@ -8,4 +8,6 @@ public interface ProjectService {
     String saveProject(ProjectDTO projectDTO);
 
     String updateProject(ProjectDTO projectDTO) throws IOException;
+
+    ProjectDTO getProject(String projectId);
 }
