@@ -147,4 +147,14 @@ public class ProjectController {
         }
     }
 
+    @GetMapping(value = "/allProjects")
+    public ResponseEntity<List<ProjectDTO>> getAllProjects(){
+        List<ProjectDTO> list = projectService.getAllProjects();
+        if (list != null){
+            return ResponseEntity.ok().body(list);
+        }else {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
 }

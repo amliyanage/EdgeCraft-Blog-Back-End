@@ -76,6 +76,12 @@ public class ProjectServiceIMPL implements ProjectService {
         return mapping.convertToProjectDTOList(allProjectByUser);
     }
 
+    @Override
+    public List<ProjectDTO> getAllProjects() {
+        List<Project> all = projectRepository.findAll();
+        return mapping.convertToProjectDTOList(all);
+    }
+
     public void deleteOldThumbnails(String fileName) throws IOException {
         Path path = Paths.get("src/main/resources/static/projectThumbnail/" + fileName +".jpg");
         Files.delete(path);

@@ -14,4 +14,6 @@ public interface ProjectService {
     ProjectDTO getProject(String projectId);
 
     List<ProjectDTO> getAllProjects(UserDTO userDTO);
+
+    List<ProjectDTO> getAllProjects();
 }
