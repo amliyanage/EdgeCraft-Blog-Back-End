@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -79,6 +80,46 @@ public class ProjectController {
         String newFileName = fileName + ".jpg";
         Path path = Paths.get("src/main/resources/static/projectThumbnail/"+newFileName);
         Files.write(path,file.getBytes());
+    }
+
+    @PutMapping
+    private ResponseEntity<String> updateProject(
+            @RequestPart("projectId") String projectId,
+            @RequestPart("projectDes") String projectDes,
+            @RequestPart("projectTitle") String projectTitle,
+            @RequestPart("projectType") String projectType,
+            @RequestPart("projectDate") String projectDate,
+            @RequestPart("projectSummery") String projectSummery,
+            @RequestPart("projectGitUrl") String projectGitUrl,
+            @RequestPart("projectThumbnail") MultipartFile projectThumbnail
+    ){
+        ProjectDTO projectDTO = new ProjectDTO();
+        projectDTO.setProjectId(projectId);
+        projectDTO.setProjectTitle(projectTitle);
+        projectDTO.setProjectType(projectType);
+        projectDTO.setProjectStatus("Active");
+        projectDTO.setDescription(projectDes);
+        projectDTO.setSummery(projectSummery);
+        projectDTO.setGitHubLink(projectGitUrl);
+        projectDTO.setDate(projectDate);
+
+        try {
+            String response = projectService.updateProject(projectDTO);
+            if (response.equals("Project Update Successful")){
+
+                try {
+                    saveUploadedFile(projectThumbnail,projectTitle);
+                } catch (Exception e) {
+                    return ResponseEntity.internalServerError().body("Project Update Failed");
+                }
+
+                return ResponseEntity.ok(response);
+            } else {
+                return ResponseEntity.badRequest().body(response);
+            }
+        } catch (IOException e) {
+            return ResponseEntity.internalServerError().body("Project Update Failed");
+        }
     }
 
 }
