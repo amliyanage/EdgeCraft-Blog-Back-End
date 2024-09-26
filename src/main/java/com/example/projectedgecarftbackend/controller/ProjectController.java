@@ -7,7 +7,10 @@ import com.example.projectedgecarftbackend.service.UserService;
 import com.example.projectedgecarftbackend.util.AppInit;
 import com.example.projectedgecarftbackend.util.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -169,6 +172,23 @@ public class ProjectController {
             }
         } catch (IOException e) {
             return ResponseEntity.badRequest().body("Project Delete Failed");
+        }
+    }
+
+    @GetMapping(value = "/getProjectThumbnail/{projectTitle}")
+    public ResponseEntity<Resource> getProjectThumbnail(@PathVariable("projectTitle") String projectTitle) {
+        try {
+            Path path = Paths.get("src/main/resources/static/projectThumbnail/" + projectTitle + ".jpg");
+            System.out.println("Looking for file at: " + path.toString()); // Add logging
+            Resource resource = new UrlResource(path.toUri());
+
+            if (resource.exists() && resource.isReadable()) {
+                return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(resource);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
