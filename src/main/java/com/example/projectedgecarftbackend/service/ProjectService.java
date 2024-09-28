@@ -18,4 +18,6 @@ public interface ProjectService {
     List<ProjectDTO> getAllProjects();
 
     String deleteProject(String projectId) throws IOException;
+
+    ProjectDTO getLastProject();
 }

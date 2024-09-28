@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -17,10 +19,17 @@ public class Project {
     private String projectTitle;
     private String projectType;
     private String projectStatus;
+
+    @Lob
+    @Column(columnDefinition = "LONGTEXT")
     private String description;
+
+    @Lob
+    @Column(columnDefinition = "LONGTEXT")
     private String summery;
     private String gitHubLink;
     private String date;
+    private Date createdDate;
 
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)

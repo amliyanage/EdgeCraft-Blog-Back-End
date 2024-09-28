@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -57,6 +58,9 @@ public class ProjectController {
         projectDTO.setSummery(projectSummery);
         projectDTO.setGitHubLink(projectGitUrl);
         projectDTO.setDate(projectDate);
+
+        Date date = new Date();
+        projectDTO.setCreatedDate(date);
 
         UserDTO userData = userService.getUserData(projectOwnerEmail);
 
@@ -189,6 +193,16 @@ public class ProjectController {
             }
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @GetMapping(value = "/getLastProject")
+    public ResponseEntity<ProjectDTO> getLastProject(){
+        ProjectDTO projectDTO = projectService.getLastProject();
+        if (projectDTO != null){
+            return new ResponseEntity<>(projectDTO, HttpStatus.OK);
+        }else {
+            return ResponseEntity.badRequest().body(null);
         }
     }
 

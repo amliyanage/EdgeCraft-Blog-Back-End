@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProjectRepository extends JpaRepository <Project , String> {
@@ -19,4 +20,6 @@ public interface ProjectRepository extends JpaRepository <Project , String> {
     List<Project> getAllProjectByUser(@Param("user") User user);
 
 
+    @Query("SELECT p FROM Project p ORDER BY p.createdDate DESC LIMIT 1")
+    Optional<Project> getLastProject();
 }
