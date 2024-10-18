@@ -248,4 +248,14 @@ public class ProjectController {
         }
     }
 
+    @GetMapping(value = "/getBackEndProject")
+    public ResponseEntity<List<ProjectDTO>> getBackEndProject(){
+        List<ProjectDTO> list = projectService.getBackEndProject();
+        if (list != null){
+            return ResponseEntity.ok().body(list);
+        }else {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
 }
