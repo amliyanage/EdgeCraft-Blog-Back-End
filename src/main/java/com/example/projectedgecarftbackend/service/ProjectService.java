@@ -22,4 +22,6 @@ public interface ProjectService {
     ProjectDTO getLastProject();
 
     List<ProjectDTO> getUiProject();
+
+    List<ProjectDTO> getFrontEndProject();
 }
