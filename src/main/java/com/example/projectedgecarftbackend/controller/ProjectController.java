@@ -228,4 +228,14 @@ public class ProjectController {
         }
     }
 
+    @GetMapping(value = "/getUiProject")
+    public ResponseEntity<List<ProjectDTO>> getUiProject(){
+        List<ProjectDTO> list = projectService.getUiProject();
+        if (list != null){
+            return ResponseEntity.ok().body(list);
+        }else {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
 }

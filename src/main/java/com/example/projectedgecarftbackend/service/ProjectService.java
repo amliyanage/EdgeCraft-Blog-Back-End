@@ -20,4 +20,6 @@ public interface ProjectService {
     String deleteProject(String projectId) throws IOException;
 
     ProjectDTO getLastProject();
+
+    List<ProjectDTO> getUiProject();
 }

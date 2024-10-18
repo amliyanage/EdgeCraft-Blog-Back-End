@@ -105,6 +105,12 @@ public class ProjectServiceIMPL implements ProjectService {
         }
     }
 
+    @Override
+    public List<ProjectDTO> getUiProject() {
+        List<Project> all = projectRepository.getProjectByProjectType("UI Design");
+        return mapping.convertToProjectDTOList(all);
+    }
+
     public void deleteOldThumbnails(String fileName) throws IOException {
         Path path = Paths.get("src/main/resources/static/projectThumbnail/" + fileName +".jpg");
         Files.delete(path);

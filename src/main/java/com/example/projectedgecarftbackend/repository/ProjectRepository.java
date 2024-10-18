@@ -22,4 +22,7 @@ public interface ProjectRepository extends JpaRepository <Project , String> {
 
     @Query("SELECT p FROM Project p ORDER BY p.createdDate DESC LIMIT 1")
     Optional<Project> getLastProject();
+
+    @Query("SELECT p FROM Project p WHERE p.projectType = :projectType")
+    List<Project> getProjectByProjectType(String projectType);
 }
