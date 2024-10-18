@@ -206,4 +206,26 @@ public class ProjectController {
         }
     }
 
+    @GetMapping(value = "/getLastProjectImg")
+    public ResponseEntity<Resource> getLastProjectImg(){
+        ProjectDTO projectDTO = projectService.getLastProject();
+        if (projectDTO != null){
+            try {
+                Path path = Paths.get("src/main/resources/static/projectThumbnail/" + projectDTO.getProjectTitle() + ".jpg");
+                Resource resource = new UrlResource(path.toUri());
+
+                if (resource.exists() && resource.isReadable()){
+                    return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(resource);
+                }else {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+                }
+
+            } catch (IOException e) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+        }else {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
 }
