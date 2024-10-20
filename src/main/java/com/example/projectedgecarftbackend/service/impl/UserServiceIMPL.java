@@ -2,16 +2,20 @@ package com.example.projectedgecarftbackend.service.impl;
 
 import com.example.projectedgecarftbackend.dto.UserDTO;
 import com.example.projectedgecarftbackend.entity.User;
+import com.example.projectedgecarftbackend.exception.UserNotFoundException;
 import com.example.projectedgecarftbackend.repository.UserRepository;
 import com.example.projectedgecarftbackend.service.UserService;
 import com.example.projectedgecarftbackend.util.AppInit;
 import com.example.projectedgecarftbackend.util.Mapping;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class UserServiceIMPL implements UserService {
 
     @Autowired
@@ -72,6 +76,13 @@ public class UserServiceIMPL implements UserService {
     public boolean updateUser(String email, String password, String username) {
         int updated = userRepository.updateUser(email, password, username);
         return updated > 0;
+    }
+
+    @Override
+    public UserDetailsService userDetailsService() {
+        return email ->
+                userRepository.findByEmail(email)
+                        .orElseThrow(()-> new UserNotFoundException("User Not found"));
     }
 
 }

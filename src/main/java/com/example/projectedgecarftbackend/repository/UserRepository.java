@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface UserRepository extends JpaRepository<User,String> {
 
@@ -24,4 +26,6 @@ public interface UserRepository extends JpaRepository<User,String> {
     @Modifying
     @Query("UPDATE User u SET u.email = :email, u.password = :password WHERE u.userName = :username")
     int updateUser(@Param("email") String email, @Param("password") String password, @Param("username") String username);
+
+    Optional<User> findByEmail(String email);
 }
